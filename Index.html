@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Instituto Alfatec</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-red: #dc3545;
+      --primary-blue: #0d6efd;
+      --dark-black: #000000;
+      --pure-white: #ffffff;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    /* Botón de Contraste */
+    .contrast-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1050;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-red), var(--primary-blue));
+      border: 3px solid var(--pure-white);
+      color: var(--pure-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .contrast-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+
+    .contrast-btn:focus {
+      outline: 3px solid #ffd700;
+      outline-offset: 2px;
+    }
+
+    /* Tooltip personalizado */
+    .contrast-tooltip {
+      position: absolute;
+      right: 70px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .contrast-tooltip::after {
+      content: '';
+      position: absolute;
+      left: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 6px solid transparent;
+      border-left-color: rgba(0,0,0,0.8);
+    }
+
+    .contrast-btn:hover .contrast-tooltip {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Estilos de Alto Contraste */
+    body.high-contrast {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+    }
+
+    body.high-contrast .top-bar {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border-bottom: 2px solid #ffff00;
+    }
+
+    body.high-contrast .top-bar .btn-link {
+      color: #000000 !important;
+    }
+
+    body.high-contrast .main-nav {
+      background: #000000 !important;
+      border-bottom: 3px solid #ffff00;
+    }
+
+    body.high-contrast .navbar-brand,
+    body.high-contrast .navbar-nav .nav-link {
+      color: #ffffff !important;
+      font-weight: bold;
+    }
+
+    body.high-contrast .navbar-nav .nav-link:hover {
+      color: #000000 !important;
+      background-color: #ffff00 !important;
+    }
+
+    body.high-contrast .hero-section {
+      background: #000000 !important;
+      border-bottom: 3px solid #ffff00;
+    }
+
+    body.high-contrast .btn-custom {
+      background-color: #ffff00 !important;
+      color: #000000 !important;
+      border: 3px solid #ffff00 !important;
+      font-weight: bold;
+    }
+
+    body.high-contrast .btn-custom:hover {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border-color: #ffffff !important;
+    }
+
+    body.high-contrast .carreras-section {
+      background-color: #000000 !important;
+    }
+
+    body.high-contrast .carrera-card {
+      background: #ffffff !important;
+      color: #000000 !important;
+      border: 3px solid #ffff00 !important;
+      border-left: 8px solid #ffff00 !important;
+    }
+
+    body.high-contrast .carrera-card h4 {
+      color: #000000 !important;
+      font-weight: bold;
+    }
+
+    body.high-contrast .carrera-card i {
+      color: #000000 !important;
+    }
+
+    body.high-contrast .info-section {
+      background-color: #000000 !important;
+    }
+
+    body.high-contrast .info-card {
+      background: #ffffff !important;
+      color: #000000 !important;
+      border: 3px solid #ffff00 !important;
+    }
+
+    body.high-contrast .info-card h3 {
+      color: #000000 !important;
+      font-weight: bold;
+    }
+
+    body.high-contrast .modal-content {
+      background: #ffffff !important;
+      color: #000000 !important;
+      border: 3px solid #ffff00 !important;
+    }
+
+    body.high-contrast .modal-header {
+      background: #000000 !important;
+      color: #ffffff !important;
+      border-bottom: 3px solid #ffff00 !important;
+    }
+
+    body.high-contrast .form-control {
+      background: #ffffff !important;
+      color: #000000 !important;
+      border: 2px solid #000000 !important;
+    }
+
+    body.high-contrast .form-control:focus {
+      border-color: #ffff00 !important;
+      box-shadow: 0 0 0 0.25rem rgba(255, 255, 0, 0.25) !important;
+    }
+
+    body.high-contrast .btn-primary {
+      background-color: #ffff00 !important;
+      border-color: #ffff00 !important;
+      color: #000000 !important;
+      font-weight: bold;
+    }
+
+    body.high-contrast .btn-primary:hover {
+      background-color: #000000 !important;
+      border-color: #000000 !important;
+      color: #ffffff !important;
+    }
+
+    body.high-contrast .contrast-btn {
+      background: #ffff00 !important;
+      color: #000000 !important;
+      border-color: #000000 !important;
+    }
+
+    /* Estilos normales */
+    .top-bar {
+      background-color: var(--dark-black);
+      color: var(--pure-white);
+      padding: 10px 0;
+    }
+
+    .main-nav {
+      background: linear-gradient(135deg, var(--primary-red), var(--primary-blue));
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .navbar-brand {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--pure-white) !important;
+    }
+
+    .navbar-nav .nav-link {
+      color: var(--pure-white) !important;
+      font-weight: 500;
+      margin: 0 10px;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: var(--dark-black) !important;
+      background-color: var(--pure-white);
+      border-radius: 5px;
+      padding: 8px 15px !important;
+    }
+
+    .hero-section {
+      background: linear-gradient(135deg, var(--primary-blue), var(--primary-red));
+      color: var(--pure-white);
+      padding: 100px 0;
+      text-align: center;
+    }
+
+    .hero-section h2 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .hero-section p {
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+    }
+
+    .btn-custom {
+      background-color: var(--pure-white);
+      color: var(--primary-red);
+      border: 2px solid var(--pure-white);
+      padding: 12px 30px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .btn-custom:hover {
+      background-color: transparent;
+      color: var(--pure-white);
+      border-color: var(--pure-white);
+    }
+
+    .carreras-section {
+      padding: 80px 0;
+      background-color: #f8f9fa;
+    }
+
+    .carrera-card {
+      background: var(--pure-white);
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      border-left: 5px solid var(--primary-red);
+    }
+
+    .carrera-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .carrera-card h4 {
+      color: var(--primary-blue);
+      margin-bottom: 15px;
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, var(--primary-red), var(--primary-blue));
+      color: var(--pure-white);
+    }
+
+    .modal-title {
+      font-weight: bold;
+    }
+
+    .btn-close {
+      filter: invert(1);
+    }
+
+    .info-section {
+      padding: 60px 0;
+    }
+
+    .info-card {
+      background: var(--pure-white);
+      border-radius: 10px;
+      padding: 40px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .info-card h3 {
+      color: var(--primary-red);
+      margin-bottom: 20px;
+    }
+
+    .login-form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+
+    .btn-login {
+      background-color: var(--primary-blue);
+      border-color: var(--primary-blue);
+      width: 100%;
+    }
+
+    .btn-login:hover {
+      background-color: var(--primary-red);
+      border-color: var(--primary-red);
+    }
+
+    /* Responsive para el botón de contraste */
+    @media (max-width: 768px) {
+      .contrast-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+        top: 15px;
+        right: 15px;
+      }
+      
+      .contrast-tooltip {
+        right: 60px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Botón de Contraste Accesible -->
+  <button class="contrast-btn" onclick="toggleContrast()" aria-label="Alternar contraste alto para mejor visibilidad" title="Contraste Alto">
+    <i class="fas fa-adjust" aria-hidden="true"></i>
+    <span class="contrast-tooltip">Contraste Alto</span>
+  </button>
+
+  <!-- Barra Superior -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <i class="fas fa-map-marker-alt"></i>
+          <button class="btn btn-link text-white p-0 ms-2" data-bs-toggle="modal" data-bs-target="#ubicacionModal">
+            Ubicación
+          </button>
+        </div>
+        <div class="col-md-6 text-end">
+          <button class="btn btn-link text-white p-0" data-bs-toggle="modal" data-bs-target="#loginModal">
+            <i class="fas fa-user"></i> Iniciar Sesión
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navegación Principal -->
+  <nav class="navbar navbar-expand-lg main-nav">
+    <div class="container">
+      <a class="navbar-brand" href="#">Instituto Alfatec</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#carreras">Carreras</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#misionModal">Misión</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#visionModal">Visión</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contacto">Contacto</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Sección de Bienvenida -->
+  <section class="hero-section">
+    <div class="container">
+      <h2>Bienvenido al Instituto Alfatec</h2>
+      <p>Formamos profesionales preparados para el futuro</p>
+      <button class="btn btn-custom btn-lg" onclick="document.getElementById('carreras').scrollIntoView()">
+        Conoce Nuestras Carreras
+      </button>
+    </div>
+  </section>
+
+  <!-- Sección de Carreras -->
+  <section id="carreras" class="carreras-section">
+    <div class="container">
+      <h3 class="text-center mb-5" style="color: var(--primary-blue); font-size: 2.5rem;">Nuestras Carreras</h3>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="carrera-card">
+            <i class="fas fa-briefcase fa-3x text-danger mb-3"></i>
+            <h4>Administración de Empresas</h4>
+            <p>Forma líderes empresariales con visión estratégica y capacidad de gestión en el mundo de los negocios.</p>
+            <ul class="list-unstyled">
+              <li><i class="fas fa-check text-success"></i> Gestión empresarial</li>
+              <li><i class="fas fa-check text-success"></i> Finanzas corporativas</li>
+              <li><i class="fas fa-check text-success"></i> Marketing estratégico</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="carrera-card">
+            <i class="fas fa-utensils fa-3x text-danger mb-3"></i>
+            <h4>Gastronomía</h4>
+            <p>Desarrolla tus habilidades culinarias y conviértete en un chef profesional con técnicas innovadoras.</p>
+            <ul class="list-unstyled">
+              <li><i class="fas fa-check text-success"></i> Cocina internacional</li>
+              <li><i class="fas fa-check text-success"></i> Repostería profesional</li>
+              <li><i class="fas fa-check text-success"></i> Gestión de restaurantes</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="carrera-card">
+            <i class="fas fa-cogs fa-3x text-danger mb-3"></i>
+            <h4>Maquinaria Pesada</h4>
+            <p>Especialízate en operación y mantenimiento de equipos de construcción y minería.</p>
+            <ul class="list-unstyled">
+              <li><i class="fas fa-check text-success"></i> Operación de equipos</li>
+              <li><i class="fas fa-check text-success"></i> Mantenimiento preventivo</li>
+              <li><i class="fas fa-check text-success"></i> Seguridad industrial</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección de Contacto -->
+  <section id="contacto" class="info-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="info-card">
+            <h3><i class="fas fa-phone"></i> Contáctanos</h3>
+            <p><strong>Teléfono:</strong> +51 976 123 456</p>
+            <p><strong>Email:</strong> info@institutoalfatec.edu.pe</p>
+            <p><strong>Horario:</strong> Lunes a Viernes, 8:00 AM - 6:00 PM</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="info-card">
+            <h3><i class="fas fa-graduation-cap"></i> ¿Por qué elegirnos?</h3>
+            <ul class="list-unstyled">
+              <li><i class="fas fa-star text-warning"></i> Más de 20 años de experiencia</li>
+              <li><i class="fas fa-star text-warning"></i> Profesores altamente calificados</li>
+              <li><i class="fas fa-star text-warning"></i> Bolsa de trabajo activa</li>
+              <li><i class="fas fa-star text-warning"></i> Instalaciones modernas</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal de Ubicación -->
+  <div class="modal fade" id="ubicacionModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-map-marker-alt"></i> Nuestra Ubicación</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <h6>Dirección Principal:</h6>
+              <p>Jr. El comercio 251<br>
+              Cajamarca, Perú</p>
+              
+              <h6>Horarios de Atención:</h6>
+              <p>Lunes a Viernes: 8:00 AM - 6:00 PM<br>
+              Sábados: 9:00 AM - 1:00 PM</p>
+
+              > "Instituto Alfatec"</p>
+            </div>
+            <div class="col-md-6">
+              <div class="bg-light p-3 rounded">
+                <i class="fas fa-map fa-5x text-primary d-block text-center mb-3"></i>
+                <p class="text-center">Mapa interactivo disponible en nuestras instalaciones</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Misión -->
+  <div class="modal fade" id="misionModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-target"></i> Nuestra Misión</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p class="lead">Formar profesionales técnicos competentes y éticos, brindando educación de calidad que responda a las demandas del mercado laboral y contribuya al desarrollo sostenible de nuestra región y país.</p>
+          
+          <h6>Nuestros Compromisos:</h6>
+          <ul>
+            <li>Educación de excelencia académica</li>
+            <li>Formación integral de la persona</li>
+            <li>Innovación tecnológica constante</li>
+            <li>Responsabilidad social y ambiental</li>
+            <li>Vinculación con el sector productivo</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Visión -->
+  <div class="modal fade" id="visionModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-eye"></i> Nuestra Visión</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p class="lead">Ser reconocidos como la institución técnica líder en el norte del Perú, destacando por la excelencia educativa, la innovación tecnológica y la formación de profesionales que transformen positivamente la sociedad.</p>
+          
+          <h6>Hacia el 2030:</h6>
+          <ul>
+            <li>Ser referente en educación técnica superior</li>
+            <li>Contar con infraestructura de vanguardia</li>
+            <li>Mantener 95% de empleabilidad de egresados</li>
+            <li>Desarrollar programas de investigación aplicada</li>
+            <li>Formar alianzas estratégicas internacionales</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Login -->
+  <div class="modal fade" id="loginModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-user-lock"></i> Iniciar Sesión</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="login-form">
+            <form id="loginForm">
+              <div class="mb-3">
+                <label for="userType" class="form-label">Tipo de Usuario</label>
+                <select class="form-select" id="userType" required>
+                  <option value="">Seleccione...</option>
+                  <option value="estudiante">Estudiante</option>
+                  <option value="docente">Docente</option>
+                  <option value="administrativo">Personal Administrativo</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="username" class="form-label">Usuario</label>
+                <input type="text" class="form-control" id="username" placeholder="Ingrese su usuario" required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" required>
+              </div>
+              <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="rememberMe">
+                <label class="form-check-label" for="rememberMe">Recordar sesión</label>
+              </div>
+              <button type="submit" class="btn btn-primary btn-login">Iniciar Sesión</button>
+            </form>
+            <div class="mt-3 text-center">
+              <a href="#" class="text-decoration-none">¿Olvidaste tu contraseña?</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Función para alternar contraste alto
+    function toggleContrast() {
+      const body = document.body;
+      const contrastBtn = document.querySelector('.contrast-btn i');
+      const tooltip = document.querySelector('.contrast-tooltip');
+      
+      body.classList.toggle('high-contrast');
+      
+      // Cambiar icono y tooltip según el estado
+      if (body.classList.contains('high-contrast')) {
+        contrastBtn.className = 'fas fa-sun';
+        tooltip.textContent = 'Contraste Normal';
+        
+        // Guardar preferencia del usuario
+        localStorage.setItem('highContrast', 'true');
+        
+        // Anunciar cambio para lectores de pantalla
+        announceToScreenReader('Contraste alto activado');
+      } else {
+        contrastBtn.className = 'fas fa-adjust';
+        tooltip.textContent = 'Contraste Alto';
+        
+        localStorage.setItem('highContrast', 'false');
+        announceToScreenReader('Contraste normal activado');
+      }
+    }
+
+    // Función para anunciar cambios a lectores de pantalla
+    function announceToScreenReader(message) {
+      const announcement = document.createElement('div');
+      announcement.setAttribute('aria-live', 'polite');
+      announcement.setAttribute('aria-atomic', 'true');
+      announcement.style.position = 'absolute';
+      announcement.style.left = '-10000px';
+      announcement.style.width = '1px';
+      announcement.style.height = '1px';
+      announcement.style.overflow = 'hidden';
+      announcement.textContent = message;
+      
+      document.body.appendChild(announcement);
+      
+      setTimeout(() => {
+        document.body.removeChild(announcement);
+      }, 1000);
+    }
+
+    // Cargar preferencia de contraste al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedContrast = localStorage.getItem('highContrast');
+      if (savedContrast === 'true') {
+        toggleContrast();
+      }
+      
+      // Inicializar animaciones de tarjetas
+      const cards = document.querySelectorAll('.carrera-card');
+      cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(50px)';
+        card.style.transition = `opacity 0.6s ease ${index * 0.2}s, transform 0.6s ease ${index * 0.2}s`;
+      });
+    });
+
+    // Soporte para navegación por teclado
+    document.querySelector('.contrast-btn').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleContrast();
+      }
+    });
+
+    // Funcionalidad del formulario de login
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const userType = document.getElementById('userType').value;
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      if (userType && username && password) {
+        alert(`Bienvenido ${username}!\nTipo de usuario: ${userType}\n\nEn un sitio web real, aquí se procesaría el inicio de sesión.`);
+        
+        // Cerrar modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+        modal.hide();
+        
+        // Limpiar formulario
+        document.getElementById('loginForm').reset();
+      }
+    });
+
+    // Navegación suave
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Efectos de animación al hacer scroll
+    window.addEventListener('scroll', function() {
+      const cards = document.querySelectorAll('.carrera-card');
+      cards.forEach(card => {
+        const cardTop = card.getBoundingClientRect().top;
+        const cardVisible = 150;
+        
+        if (cardTop < window.innerHeight - cardVisible) {
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
